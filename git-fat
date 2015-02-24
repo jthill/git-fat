@@ -266,7 +266,10 @@ class GitFat(object):
                     os.rename(tmpname, objfile)
                     self.verbose('git-fat filter-clean: caching to %s' % objfile)
                 cached = True
-                outstreamclean.write(self.encode(digest, bytes))
+                if bytes != 0:
+                    outstreamclean.write(self.encode(digest, bytes))
+                else:
+                    self.verbose('git-fat filter-clean: not modifying 0 length file')
         finally:
             if not cached:
                 os.remove(tmpname)
